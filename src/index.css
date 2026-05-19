@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme{
+--color-bgc: oklch(0.985 0 0);        /* Near white #fafafa */
+--color-fg: oklch(0.145 0 0);        /* Near black #0a0a0a */
+--color-pri: oklch(0.145 0 0);           /* Near black #0a0a0a */
+--color-pri-fg: oklch(0.985 0 0); /* Near white #fafafa */
+--color-sec: oklch(0.96 0 0);          /* Light gray #f0f0f0 */
+--color-sec-for: oklch(0.205 0 0); /* Dark gray #1a1a1a */
+--color-muted: oklch(0.96 0 0);              /* Light gray #f0f0f0 */
+--color-muted-fg: oklch(0.5 0 0);    /* Mid gray #737373 */
+--color-accent: oklch(0.55 0.15 250);        /* Blue #2563eb */
+--color-accent-fg: oklch(0.985 0 0); /* Near white #fafafa */
+--color-border: oklch(0.91 0 0);             /* Gray #e5e5e5 */
+--color-ring: oklch(0.55 0.15 250);          /* Blue #2563eb */
+--color-nav: oklch(0.145 0 0);            /* Near black #0a0a0a */
+--color-nav-fg: oklch(0.985 0 0); /* Near white #fafafa */
+--radius-5xl: 50px
+
+}
+
+body{
+    min-height: 100vh;
+}
