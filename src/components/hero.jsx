@@ -1,16 +1,14 @@
 import React from 'react'
 
-
-
 const Hero = () => {
   return (
-    <section className='relative h-screen bg-pri overflow-hidden'>
+    <section className='relative bg-pri overflow-hidden'>
       <div className='  h-full'>
         <div className='absolute inset-0'>
           <img src="/hero.jpg" 
           alt="LUXE"
           className='w-full h-full object-cover opacity-40' />
-          <div className='absolute inset-0 bg-gradient-to-r from-pri/90 to'></div>
+          <div className='absolute inset-0 bg-gradient-to-r from-pri/90 to-transparent'></div>
         </div>
           
           <div className='relative mx-auto max-w-7xl  px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40'>
@@ -26,10 +24,8 @@ const Hero = () => {
                 </button>
                 <button className='px-4 py-2 border border-pri-fg/20 bg-transparent items-center text-pri-fg hover:bg-pri-fg/10 rounded-lg'>View Lookbook</button>
             </div>
-          
           </div>
       </div>
-      
     </section>
   )
 }
