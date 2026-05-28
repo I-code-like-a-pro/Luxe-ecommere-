@@ -1,6 +1,7 @@
 import React from 'react'
 import products from '../data/product.js'
 import { Star, StarHalf } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const StarRating = ({ rating }) => {
     return (
@@ -51,35 +52,38 @@ const Products = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-3 sm:gap-4 lg:gap-6 w-full'>
                 {
                     products.map((product) => (
-                        <div key={product.id} className='group border border-transparent rounded-lg overflow-hidden flex flex-col'>
-                            {/* Image */}
-                            <div className='bg-sec relative aspect-square overflow-hidden rounded-lg'>
-                                <img 
-                                    src={product.image} 
-                                    alt={product.name} 
-                                    className='transition-transform duration-500 group-hover:scale-105 block h-full object-cover w-full overflow-hidden' 
-                                /> 
-                            </div>
-
-                            {/* Product info */}
-                            <div className='flex flex-col mt-3 sm:mt-4'>
-                                <h3 className='text-xs sm:text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate'>
-                                    {product.name} 
-                                </h3>
-
-                                {/* Star rating */}
-                                <div className='flex items-center gap-1 mt-1'>
-                                    <StarRating rating={product.rating} />
-                                    <span className='text-xs text-gray-500'>
-                                        ({product.reviews})
-                                    </span>
+                       <Link to={`/product/${product.id}`}>
+                        
+                            <div key={product.id} className='group border border-transparent rounded-lg overflow-hidden flex flex-col'>
+                                {/* Image */}
+                                <div className='bg-sec relative aspect-square overflow-hidden rounded-lg'>
+                                    <img 
+                                        src={product.image} 
+                                        alt={product.name} 
+                                        className='transition-transform duration-500 group-hover:scale-105 block h-full object-cover w-full overflow-hidden' 
+                                    /> 
                                 </div>
 
-                                <p className='mt-1 text-xs sm:text-sm text-muted-fg font-medium'>
-                                    ${product.price}
-                                </p>
+                                {/* Product info */}
+                                <div className='flex flex-col mt-3 sm:mt-4'>
+                                    <h3 className='text-xs sm:text-sm font-medium text-fg group-hover:text-accent transition-colors truncate'>
+                                        {product.name} 
+                                    </h3>
+
+                                    {/* Star rating */}
+                                    <div className='flex items-center gap-1 mt-1'>
+                                        <StarRating rating={product.rating} />
+                                        <span className='text-xs text-gray-500'>
+                                            ({product.reviews})
+                                        </span>
+                                    </div>
+
+                                    <p className='mt-1 text-xs sm:text-sm text-muted-fg font-medium'>
+                                        ${product.price}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 }
                 </div>
