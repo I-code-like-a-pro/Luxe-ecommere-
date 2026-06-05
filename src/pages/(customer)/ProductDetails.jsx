@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Star, StarHalf, ChevronLeft } from 'lucide-react'
 import { useParams, useNavigate } from 'react-router-dom'
+
 import products from '../../data/product'
 import QuantitySelector from '../../components/QuantitySelector'
+
+
 
 // ─── Star Rating ─────────────────────────────────────────────────────────────
 
@@ -45,10 +48,28 @@ const StockBadge = ({ stock }) =>
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const ProductDetails = () => {
+
+
+  const [currQuantity, setCurrQuantity] = useState(1)
+  const [cart, setCart] = useState([])
+
+
   const { id } = useParams()
   const navigate = useNavigate()
   const product = products.find((p) => p.id === parseInt(id))
+  const addToCart = () => {
+    if (!product) return
 
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id)
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + currQuantity } : item
+        )
+      }
+      return [...prev, { ...product, quantity: currQuantity }]
+    })
+  }
   if (!product) return <div className="p-10 text-center">Product not found</div>
 
   const originalPrice = product.originalPrice || (product.price * 1.4).toFixed(2)
@@ -130,8 +151,8 @@ const ProductDetails = () => {
           </div>
 
           {/* CTA */}
-          <button className="bg-nav text-pri-fg w-full rounded-xl px-6 py-4 font-medium text-base hover:opacity-90 transition-opacity duration-200">
-            Proceed to checkout
+          <button className="bg-nav text-pri-fg w-full rounded-xl px-6 py-4 font-medium text-base hover:opacity-90 transition-opacity duration-200" onClick={addToCart}>
+            Add to Cart
           </button>
 
           {/* Shipping info */}

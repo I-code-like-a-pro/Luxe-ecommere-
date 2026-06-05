@@ -7,18 +7,18 @@ import Homepage from './pages/homepage.jsx'
 import ProductDetails from './pages/customer/ProductDetails.jsx'
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      { path: '/', element: <Homepage /> },
-       { path: '/product/:id', element: <ProductDetails /> },
-    ]
-  }
+    {
+        path: '/',
+        element: <Layout />,
+        children: [
+            { path: '/', element: <Homepage /> },
+            { path: '/product/:id', element: <ProductDetails /> },
+        ],
+    },
 ])
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+    <StrictMode>
+        <RouterProvider router={router} />
+    </StrictMode>
 )
