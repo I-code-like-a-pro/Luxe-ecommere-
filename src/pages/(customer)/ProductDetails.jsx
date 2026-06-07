@@ -3,11 +3,23 @@ import { Star, StarHalf, ChevronLeft } from 'lucide-react'
 import { useParams, useNavigate } from 'react-router-dom'
 
 import products from '../../data/product'
-import QuantitySelector from '../../components/QuantitySelector'
 
 
 
-// ─── Star Rating ─────────────────────────────────────────────────────────────
+// ─── Star Rating and quantity Selector ─────────────────────────────────────────────────────────────
+const [quantity, setQuantity]  = useState(1)
+
+const decrease = () => {
+  if (quantity <= 0) return
+    setQuantity(quantity - 1)
+}
+
+const increase = () => setQuantity(quantity + 1)
+
+    const btnClass =
+        'border border-border w-8 flex items-center justify-center h-8 font-medium hover:bg-sec'
+
+
 
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
@@ -48,9 +60,6 @@ const StockBadge = ({ stock }) =>
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const ProductDetails = () => {
-
-
-  const [currQuantity, setCurrQuantity] = useState(1)
   const [cart, setCart] = useState([])
 
 
@@ -70,9 +79,7 @@ const ProductDetails = () => {
       return [...prev, { ...product, quantity: currQuantity }]
     })
   }
-  if (!product) return <div className="p-10 text-center">Product not found</div>
 
-  const originalPrice = product.originalPrice || (product.price * 1.4).toFixed(2)
 
   return (
     <div className="bg-bgc min-h-screen">
@@ -147,7 +154,27 @@ const ProductDetails = () => {
           {/* Quantity */}
           <div className="flex flex-col gap-2">
             <span className="font-medium text-sm">Quantity</span>
-            <QuantitySelector />
+            <div>
+               <div className="flex gap-4 my-2">
+            <button onClick={decrease} className={btnClass}>
+                −
+            </button>
+            <div className="flex items-center justify-center border border-border px-3 py-1 gap-2 group">
+                <span className="mx-1">{quantity}</span>
+                <div className="flex flex-col items-center leading-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <button onClick={increase} className="text-[10px]">
+                        ▲
+                    </button>
+                    <button onClick={decrease} className="text-[10px]">
+                        ▼
+                    </button>
+                </div>
+            </div>
+            <button className={btnClass} onClick={increase}>
+                +
+            </button>
+        </div>
+            </div>
           </div>
 
           {/* CTA */}
