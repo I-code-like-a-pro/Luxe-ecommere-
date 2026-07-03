@@ -1,7 +1,9 @@
-import React from 'react'
-import {Search, ShoppingBag, ShoppingCart} from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Search, ShoppingBag } from 'lucide-react'
+import { useCart } from '../context/useCart.js'
 
 const Navbar = () => {
+    const { totalProducts } = useCart()
     const navlinks = [
         {
             "name":"New Arrivals","label":"Arrivals"
@@ -29,9 +31,9 @@ const Navbar = () => {
             <nav className='bg-nav w-full p-4 h-100vh flex text-nav-fg gap-4 sticky' >
                <div className='w-full'>
                 <div className='flex justify-between w-full'>
-                     <div className='text-xl font-bold tracking-tight hover:cursor-pointer'>
+                     <Link to='/' className='text-xl font-bold tracking-tight hover:cursor-pointer'>
                     LUXE
-                </div>
+                </Link>
 
                
                <ul className='flex items-center gap-4'>
@@ -50,12 +52,12 @@ const Navbar = () => {
                         <Search className='h-5 w-5'/>
                        </button>
 
-                       <div className=''>
+                       <Link to='/cart' className='relative block' aria-label={`${totalProducts} products in cart`}>
                         <ShoppingBag/>
                         <span className='absolute top-1.5 right-2.5 bg-accent border rounded-full h-4 w-4 flex justify-center items-center border-transparent'>
-                            3
+                            {totalProducts}
                         </span>
-                       </div>
+                       </Link>
                     </div>
                     
                 </div>

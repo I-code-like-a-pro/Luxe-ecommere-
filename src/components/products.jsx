@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 import products from '../data/product.js'
 import { Star, StarHalf } from 'lucide-react'
 
@@ -51,7 +51,7 @@ const Products = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-3 sm:gap-4 lg:gap-6 w-full'>
                 {
                     products.map((product) => (
-                        <div key={product.id} className='group border border-transparent rounded-lg overflow-hidden flex flex-col'>
+                        <Link to={`/products/${product.id}`} key={product.id} className='group border border-transparent rounded-lg overflow-hidden flex flex-col'>
                             {/* Image */}
                             <div className='bg-sec relative aspect-square overflow-hidden rounded-lg'>
                                 <img 
@@ -79,7 +79,7 @@ const Products = () => {
                                     ${product.price}
                                 </p>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 }
                 </div>
