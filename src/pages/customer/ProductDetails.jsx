@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Minus, Plus, ShoppingBag, Star, StarHalf } from 'lucide-react'
+import { Minus, Plus, ShoppingBag, Star, StarHalf, Search } from 'lucide-react'
 import products from '../../data/product.js'
 import { useCart } from '../../context/useCart.js'
+import { AnalyzeProductReviews } from '../../../backend/CallGroq.js'
 import '../../App.css'
+import TypewriterEffect from '../../components/typeWriter.jsx'
 
 const getReviewStorageKey = (productId) => `luxe-product-reviews-${productId}`
 
@@ -46,6 +48,9 @@ const ProductDetailsContent = ({ productId }) => {
   const [reviewName, setReviewName] = useState('')
   const [reviewRating, setReviewRating] = useState(5)
   const [reviewComment, setReviewComment] = useState('')
+  const [aiPanelOpen, setAiPanelOpen] = useState(false)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiSummaryText, setAiSummaryText] = useState('')
 
   const product = products.find((item) => item.id === Number(productId))
   const totalReviewScore = productReviews.reduce(
@@ -110,6 +115,34 @@ const ProductDetailsContent = ({ productId }) => {
     setReviewName('')
     setReviewRating(5)
     setReviewComment('')
+  }
+
+  const extractComments = () => {
+    return productReviews
+      .map((r) => (r[productId] ? r[productId].comment : null))
+      .filter(Boolean)
+  }
+
+  const fetchReviewsSummary = async () => {
+    const comments = extractComments()
+    if (!comments.length) {
+      setAiSummaryText('No reviews available to summarize.')
+      return
+    }
+    setAiLoading(true)
+    try {
+      const result = await AnalyzeProductReviews(comments)
+      const pros = (result.pros || []).join('; ')
+      const cons = (result.cons || []).join('; ')
+      const combined = `Pros: ${pros || 'None'} — Cons: ${cons || 'None'}`
+      setAiSummaryText(combined)
+    } catch (err) {
+      console.error(err)
+      setAiSummaryText('Unable to analyze reviews at this time.')
+    } finally {
+      setAiLoading(false)
+      setAiPanelOpen(true)
+    }
   }
 
   return (
@@ -226,6 +259,42 @@ const ProductDetailsContent = ({ productId }) => {
           )}
         </div>
       </section>
+
+      {/* AI floating widget */}
+      <div className={`ai-widget ${aiPanelOpen ? 'open' : ''}`}>
+        <button
+          className='ai-button'
+          aria-label='Open AI assistant'
+          onClick={() => setAiPanelOpen((v) => !v)}
+        >
+          <Search size={18} />
+        </button>
+
+        <div className='ai-panel' role='dialog' aria-hidden={!aiPanelOpen}>
+          <div className='ai-header'>
+            <strong>AI Review Summarizer</strong>
+            <button className='ai-close' onClick={() => setAiPanelOpen(false)}>
+              ✕
+            </button>
+          </div>
+
+          <div className='ai-content'>
+            {aiLoading ? (
+              <p className='muted'>Analyzing reviews…</p>
+            ) : aiSummaryText ? (
+              <TypewriterEffect text={aiSummaryText} speed={30} />
+            ) : (
+              <p className='muted'>Get a quick summary of customer feedback.</p>
+            )}
+          </div>
+
+          <div className='ai-actions'>
+            <button className='add-to-cart-button' onClick={fetchReviewsSummary}>
+              See reviews summary
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,22 +1,25 @@
+import React, { useEffect, useState } from 'react'
 
-
-export default function TypewriterEffect ({ text, speed }) {
-    const [displayedText, setDisplayedText] = useState('');
-    const [index, setIndex] = useState(0);
+export default function TypewriterEffect({ text = '', speed = 40 }) {
+    const [displayedText, setDisplayedText] = useState('')
+    const [index, setIndex] = useState(0)
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        // reset when text changes
+        setDisplayedText('')
+        setIndex(0)
+    }, [text])
 
-            if (index < text.length) {
-                setDisplayedText((prev) => prev + text[index]);
-                setIndex(index + 1);
-            } else {
-                clearInterval(interval);
-            }
-        }, speed);
+    useEffect(() => {
+        if (!text || index >= text.length) return
 
-        return () => clearInterval(interval);
-    }, [index, text, speed]);
+        const id = setTimeout(() => {
+            setDisplayedText((prev) => prev + text[index])
+            setIndex((i) => i + 1)
+        }, speed)
 
-    return <span className="typewriter-text">{displayedText}</span>;
-};
+        return () => clearTimeout(id)
+    }, [index, text, speed])
+
+    return <span className="typewriter-text">{displayedText}</span>
+}

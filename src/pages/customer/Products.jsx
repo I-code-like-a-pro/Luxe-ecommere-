@@ -27,50 +27,46 @@ const StarRating = ({ rating }) => {
 
 const Products = () => {
   return (
-    <div className='bg-sec min-h-screen'>
-      <div className='px-4 sm:px-6 lg:px-8 py-8'>
+    <div className='min-h-screen bg-sec'>
+      <div className='px-4 py-8 sm:px-6 lg:px-8'>
         <section>
-          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3'>
+          <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <h1 className='text-fg text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight'>
+              <h1 className='text-xl font-bold tracking-tight text-fg sm:text-2xl lg:text-3xl'>
                 Products
               </h1>
-              <p className='text-muted-fg mt-1 sm:mt-3 text-sm sm:text-lg'>
+              <p className='mt-1 text-sm text-muted-fg sm:mt-3 sm:text-lg'>
                 Explore the full LUXE collection
               </p>
             </div>
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-6 gap-3 sm:gap-4 lg:gap-6 w-full'>
+          <div className='mt-6 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6'>
             {products.map((product) => (
               <Link
                 to={`/products/${product.id}`}
                 key={product.id}
-                className='group border border-transparent rounded-lg overflow-hidden flex flex-col'
+                className='group flex flex-col overflow-hidden rounded-lg border border-transparent'
               >
-                <div className='bg-sec relative aspect-square overflow-hidden rounded-lg'>
+                <div className='relative aspect-square overflow-hidden rounded-lg bg-sec'>
                   <img
                     src={product.image}
                     alt={product.name}
-                    className='transition-transform duration-500 group-hover:scale-105 block h-full object-cover w-full overflow-hidden'
+                    className='block h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
                   />
                 </div>
 
-                <div className='flex flex-col mt-3 sm:mt-4'>
-                  <h3 className='text-xs sm:text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate'>
+                <div className='mt-3 flex flex-col sm:mt-4'>
+                  <h3 className='truncate text-sm font-medium text-foreground transition-colors group-hover:text-accent sm:text-base'>
                     {product.name}
                   </h3>
 
-                  <div className='flex items-center gap-1 mt-1'>
+                  <div className='mt-1 flex items-center gap-1'>
                     <StarRating rating={product.rating} />
-                    <span className='text-xs text-gray-500'>
-                      ({product.reviews})
-                    </span>
+                    <span className='text-xs text-gray-500'>({product.reviews})</span>
                   </div>
 
-                  <p className='mt-1 text-xs sm:text-sm text-muted-fg font-medium'>
-                    ${product.price}
-                  </p>
+                  <p className='mt-1 text-sm font-medium text-muted-fg'>${product.price}</p>
                 </div>
               </Link>
             ))}
