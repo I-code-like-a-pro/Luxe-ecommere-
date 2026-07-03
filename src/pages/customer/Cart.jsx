@@ -22,7 +22,7 @@ const Cart = () => {
         </div>
 
         <div className='cart-summary'>
-          <p>Total products in cart array</p>
+          <p>Total products in cart</p>
           <strong>{totalProducts}</strong>
         </div>
 
