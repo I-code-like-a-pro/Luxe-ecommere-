@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Minus, Plus, ShoppingBag, Star, StarHalf, Search } from 'lucide-react'
+import { Minus, Plus, ShoppingBag, Star, StarHalf, Sparkles } from 'lucide-react'
 import products from '../../data/product.js'
 import { useCart } from '../../context/useCart.js'
 import '../../App.css'
@@ -168,9 +168,41 @@ const ProductDetailsContent = ({ productId }) => {
     setAiLoading(true)
     try {
       const result = await analyzeReviews(comments)
-      const pros = (result.pros || []).join('; ')
-      const cons = (result.cons || []).join('; ')
-      const combined = `Pros: ${pros || 'None'} — Cons: ${cons || 'None'}`
+      const prosList = (result.pros || []).filter(Boolean)
+      const consList = (result.cons || []).filter(Boolean)
+      
+      let combined = ''
+      if (prosList.length > 0) {
+        const formattedPros = prosList.map(p => p.toLowerCase())
+        let prosText = ''
+        if (formattedPros.length === 1) {
+          prosText = formattedPros[0]
+        } else if (formattedPros.length === 2) {
+          prosText = `${formattedPros[0]} and ${formattedPros[1]}`
+        } else {
+          prosText = `${formattedPros.slice(0, -1).join(', ')}, and ${formattedPros[formattedPros.length - 1]}`
+        }
+        combined += `Customers highly recommend this product for its ${prosText}.`
+      } else {
+        combined += `There are no standout positive features mentioned in reviews yet.`
+      }
+
+      const activeCons = consList.filter(c => c.toLowerCase() !== 'none' && c.toLowerCase() !== 'none reported')
+      if (activeCons.length > 0) {
+        const formattedCons = activeCons.map(c => c.toLowerCase())
+        let consText = ''
+        if (formattedCons.length === 1) {
+          consText = formattedCons[0]
+        } else if (formattedCons.length === 2) {
+          consText = `${formattedCons[0]} and ${formattedCons[1]}`
+        } else {
+          consText = `${formattedCons.slice(0, -1).join(', ')}, and ${formattedCons[formattedCons.length - 1]}`
+        }
+        combined += ` On the other hand, some downsides reported include ${consText}.`
+      } else {
+        combined += ` No significant downsides have been reported.`
+      }
+
       setAiSummaryText(combined)
     } catch (err) {
       console.error(err)
@@ -300,7 +332,7 @@ const ProductDetailsContent = ({ productId }) => {
           aria-label='Open AI assistant'
           onClick={() => setAiPanelOpen((v) => !v)}
         >
-          <Search size={18} />
+          <Sparkles size={18} />
         </button>
 
         <div className='ai-panel' role='dialog' aria-hidden={!aiPanelOpen}>

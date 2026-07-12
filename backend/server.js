@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import process from 'process'
 import { AnalyzeProductReviews } from './CallGroq.js'
 
 const app = express()
