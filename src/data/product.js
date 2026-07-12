@@ -9,6 +9,29 @@ const products = [
     reviews: 128,
     stock: 15,
     description: "Clean minimal sneakers perfect for everyday wear.",
+    reviewsData: [
+      {
+        id: '1-1',
+        name: 'Hannah',
+        rating: 5,
+        comment: 'Super comfortable and stylish. I wear them every day and they still look new.',
+        createdAt: 'June 12, 2026',
+      },
+      {
+        id: '1-2',
+        name: 'Marcus',
+        rating: 4,
+        comment: 'Great fit and lightweight, but I wish the sole had just a touch more grip.',
+        createdAt: 'May 29, 2026',
+      },
+      {
+        id: '1-3',
+        name: 'Leah',
+        rating: 5,
+        comment: 'Perfect for everyday wear. Easy to dress up or down.',
+        createdAt: 'April 18, 2026',
+      },
+    ],
   },
   {
     id: 2,
@@ -20,6 +43,29 @@ const products = [
     reviews: 94,
     stock: 8,
     description: "Premium leather bag with adjustable strap.",
+    reviewsData: [
+      {
+        id: '2-1',
+        name: 'Avery',
+        rating: 5,
+        comment: 'The leather is soft and the strap is very comfortable. I get compliments every time I use it.',
+        createdAt: 'June 5, 2026',
+      },
+      {
+        id: '2-2',
+        name: 'Diane',
+        rating: 4,
+        comment: 'Beautiful finish and very functional, though I wish it had one more interior pocket.',
+        createdAt: 'May 14, 2026',
+      },
+      {
+        id: '2-3',
+        name: 'Noah',
+        rating: 5,
+        comment: 'Excellent quality and perfect size for daily essentials.',
+        createdAt: 'March 22, 2026',
+      },
+    ],
   },
   {
     id: 3,
@@ -31,6 +77,29 @@ const products = [
     reviews: 67,
     stock: 22,
     description: "Breathable linen shirt for a relaxed premium look.",
+    reviewsData: [
+      {
+        id: '3-1',
+        name: 'Sofia',
+        rating: 4,
+        comment: 'Soft linen and a nice loose fit. Great for warm weather.',
+        createdAt: 'June 8, 2026',
+      },
+      {
+        id: '3-2',
+        name: 'Oliver',
+        rating: 5,
+        comment: 'The shirt looks much more expensive than it is. Very happy with the quality.',
+        createdAt: 'May 2, 2026',
+      },
+      {
+        id: '3-3',
+        name: 'Mia',
+        rating: 4,
+        comment: 'Comfortable and stylish, though it does wrinkle a bit after washing.',
+        createdAt: 'April 28, 2026',
+      },
+    ],
   },
   {
     id: 4,
@@ -42,6 +111,29 @@ const products = [
     reviews: 203,
     stock: 40,
     description: "Lightweight 18k gold plated hoops for any occasion.",
+    reviewsData: [
+      {
+        id: '4-1',
+        name: 'Emma',
+        rating: 5,
+        comment: 'Beautiful shine and very lightweight. I wear them all day without discomfort.',
+        createdAt: 'June 20, 2026',
+      },
+      {
+        id: '4-2',
+        name: 'Leo',
+        rating: 4,
+        comment: 'Lovely hoops, though I would like a slightly thicker finish.',
+        createdAt: 'May 18, 2026',
+      },
+      {
+        id: '4-3',
+        name: 'Natalie',
+        rating: 5,
+        comment: 'Perfect accessory for both casual and formal outfits.',
+        createdAt: 'March 30, 2026',
+      },
+    ],
   },
   {
     id: 5,
@@ -53,6 +145,29 @@ const products = [
     reviews: 156,
     stock: 18,
     description: "Tailored chinos that work for casual and smart casual.",
+    reviewsData: [
+      {
+        id: '5-1',
+        name: 'Mason',
+        rating: 5,
+        comment: 'Fits true to size and the fabric is comfortable all day.',
+        createdAt: 'June 10, 2026',
+      },
+      {
+        id: '5-2',
+        name: 'Zara',
+        rating: 4,
+        comment: 'Nice cut and color, but I wish there were more size choices.',
+        createdAt: 'May 9, 2026',
+      },
+      {
+        id: '5-3',
+        name: 'Raj',
+        rating: 5,
+        comment: 'These chinos look sharp and still feel relaxed.',
+        createdAt: 'April 16, 2026',
+      },
+    ],
   },
   {
     id: 6,
@@ -64,6 +179,29 @@ const products = [
     reviews: 312,
     stock: 5,
     description: "Swiss movement minimalist watch with leather strap.",
+    reviewsData: [
+      {
+        id: '6-1',
+        name: 'Isabel',
+        rating: 5,
+        comment: 'Incredibly sleek design and the movement is very accurate.',
+        createdAt: 'June 2, 2026',
+      },
+      {
+        id: '6-2',
+        name: 'Ethan',
+        rating: 5,
+        comment: 'The leather strap feels premium and the watch keeps perfect time.',
+        createdAt: 'May 27, 2026',
+      },
+      {
+        id: '6-3',
+        name: 'Chloe',
+        rating: 4,
+        comment: 'Love the minimal style, though I would prefer a slightly bigger face.',
+        createdAt: 'April 11, 2026',
+      },
+    ],
   },
   {
     id: 7,
@@ -75,6 +213,29 @@ const products = [
     reviews: 89,
     stock: 35,
     description: "Sturdy canvas tote for everyday essentials.",
+    reviewsData: [
+      {
+        id: '7-1',
+        name: 'Ariel',
+        rating: 4,
+        comment: 'Great size and sturdy straps. Perfect for groceries and daily use.',
+        createdAt: 'June 14, 2026',
+      },
+      {
+        id: '7-2',
+        name: 'Jason',
+        rating: 4,
+        comment: 'Good quality canvas and roomy interior, though the color fades slightly after washing.',
+        createdAt: 'May 5, 2026',
+      },
+      {
+        id: '7-3',
+        name: 'Nina',
+        rating: 5,
+        comment: 'Perfect everyday tote—easy to carry and holds everything I need.',
+        createdAt: 'April 21, 2026',
+      },
+    ],
   },
   {
     id: 8,
@@ -86,6 +247,29 @@ const products = [
     reviews: 178,
     stock: 12,
     description: "Premium suede Chelsea boots for a sharp look.",
+    reviewsData: [
+      {
+        id: '8-1',
+        name: 'Camille',
+        rating: 5,
+        comment: 'Beautiful boots with a great fit. Comfortable from the first wear.',
+        createdAt: 'June 3, 2026',
+      },
+      {
+        id: '8-2',
+        name: 'Julian',
+        rating: 4,
+        comment: 'Looks premium and the suede feels soft, but I needed to size up slightly.',
+        createdAt: 'May 1, 2026',
+      },
+      {
+        id: '8-3',
+        name: 'Sienna',
+        rating: 5,
+        comment: 'Excellent craftsmanship and very stylish. I get compliments all the time.',
+        createdAt: 'April 9, 2026',
+      },
+    ],
   }
 ]
 

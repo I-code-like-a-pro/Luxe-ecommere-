@@ -3,16 +3,46 @@ import { Link, useParams } from 'react-router-dom'
 import { Minus, Plus, ShoppingBag, Star, StarHalf, Search } from 'lucide-react'
 import products from '../../data/product.js'
 import { useCart } from '../../context/useCart.js'
-import { AnalyzeProductReviews } from '../../../backend/CallGroq.js'
 import '../../App.css'
 import TypewriterEffect from '../../components/typeWriter.jsx'
 
 const getReviewStorageKey = (productId) => `luxe-product-reviews-${productId}`
 
+const normalizeStoredReview = (review, productId) => {
+  if (!review || typeof review !== 'object') {
+    return null
+  }
+
+  if (typeof review.rating === 'number' && typeof review.comment === 'string') {
+    return review
+  }
+
+  if (review[productId] && typeof review[productId] === 'object') {
+    return review[productId]
+  }
+
+  const nestedKey = Object.keys(review).find(
+    (key) => review[key] && typeof review[key] === 'object' && typeof review[key].rating === 'number'
+  )
+
+  return nestedKey ? review[nestedKey] : null
+}
+
 const readProductReviews = (productId) => {
   try {
     const storedReviews = localStorage.getItem(getReviewStorageKey(productId))
-    return storedReviews ? JSON.parse(storedReviews) : []
+    if (!storedReviews) {
+      return []
+    }
+
+    const parsedReviews = JSON.parse(storedReviews)
+    if (!Array.isArray(parsedReviews)) {
+      return []
+    }
+
+    return parsedReviews
+      .map((review) => normalizeStoredReview(review, productId))
+      .filter(Boolean)
   } catch {
     return []
   }
@@ -53,13 +83,11 @@ const ProductDetailsContent = ({ productId }) => {
   const [aiSummaryText, setAiSummaryText] = useState('')
 
   const product = products.find((item) => item.id === Number(productId))
-  const totalReviewScore = productReviews.reduce(
-    (total, review) => total + review.rating,
-    product ? product.rating * product.reviews : 0
-  )
-  const displayedReviewCount = product ? product.reviews + productReviews.length : 0
+  const initialProductReviews = product?.reviewsData || []
+  const allReviews = [...initialProductReviews, ...productReviews]
+  const displayedReviewCount = allReviews.length
   const displayedRating = displayedReviewCount
-    ? Number((totalReviewScore / displayedReviewCount).toFixed(1))
+    ? Number((allReviews.reduce((total, review) => total + review.rating, 0) / displayedReviewCount).toFixed(1))
     : 0
 
   if (!product) {
@@ -92,35 +120,43 @@ const ProductDetailsContent = ({ productId }) => {
     event.preventDefault()
 
     const newReview = {
-      [productId]:{id: `${productId}-${Date.now()}`,
+      id: `${productId}-${Date.now()}`,
       name: reviewName.trim() || 'Anonymous',
       rating: Number(reviewRating),
       comment: reviewComment.trim(),
       createdAt: new Date().toLocaleDateString(),
-      productId:{
-        }
-      }
-
     }
 
     setProductReviews((currentReviews) => {
       const nextReviews = [newReview, ...currentReviews]
       localStorage.setItem(getReviewStorageKey(productId), JSON.stringify(nextReviews))
-      console.log(productReviews)
-    
       return nextReviews
-
-      
     })
+
     setReviewName('')
     setReviewRating(5)
     setReviewComment('')
   }
 
   const extractComments = () => {
-    return productReviews
-      .map((r) => (r[productId] ? r[productId].comment : null))
-      .filter(Boolean)
+    return allReviews.map((review) => review.comment).filter(Boolean)
+  }
+
+  const analyzeReviews = async (comments) => {
+    const response = await fetch('/api/analyze-reviews', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ reviews: comments }),
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.text()
+      throw new Error(`Analysis API error ${response.status}: ${errorBody}`)
+    }
+
+    return response.json()
   }
 
   const fetchReviewsSummary = async () => {
@@ -131,7 +167,7 @@ const ProductDetailsContent = ({ productId }) => {
     }
     setAiLoading(true)
     try {
-      const result = await AnalyzeProductReviews(comments)
+      const result = await analyzeReviews(comments)
       const pros = (result.pros || []).join('; ')
       const cons = (result.cons || []).join('; ')
       const combined = `Pros: ${pros || 'None'} — Cons: ${cons || 'None'}`
@@ -233,26 +269,23 @@ const ProductDetailsContent = ({ productId }) => {
           <div className='review-list-header'>
             <div>
               <p className='cart-eyebrow'>Customer feedback</p>
-              <h2>{productReviews.length} new reviews</h2>
+              <h2>{allReviews.length} reviews</h2>
             </div>
             <StarRating rating={displayedRating} />
           </div>
 
-          {productReviews.length > 0 ? (
+          {allReviews.length > 0 ? (
             <div className='review-list'>
-              {productReviews.map((review) => {
-                const reviews = review[productId]
-                return(
-                  <article className='review-item' key={reviews.id}>
+              {allReviews.map((review) => (
+                <article className='review-item' key={review.id}>
                   <div className='reviews-item-header'>
-                    <strong>{reviews.name}</strong>
-                    <span>{reviews.createdAt}</span>
+                    <strong>{review.name}</strong>
+                    <span>{review.createdAt}</span>
                   </div>
-                  <StarRating rating={reviews.rating} />
-                  <p>{reviews.comment}</p>
+                  <StarRating rating={review.rating} />
+                  <p>{review.comment}</p>
                 </article>
-                )
-})}
+              ))}
             </div>
           ) : (
             <p className='review-empty'>No customer reviews yet. Be the first to review this product.</p>
